@@ -55,7 +55,7 @@ ROOT_URLCONF = "mysite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -80,7 +80,7 @@ DATABASES = {
         "USER": "cmdbuser",
         "PASSWORD": "admin123",
         "HOST": "127.0.0.1",
-        "PORT": "1234",
+        "PORT": "3306",
     }
 }
 
@@ -120,6 +120,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+# 静态文件目录配置
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# 生产环境静态文件收集目录
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

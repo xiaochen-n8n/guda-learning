@@ -1,10 +1,17 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
+from .models import Host
+from .forms import HostForm
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, world.")
+    host_list = Host.objects.all()
+    return render(request, "main.html", {"host_list": host_list})
 
-def cmdb(request): #用于承载资产管理的核心功能。
-    return HttpResponse("This is cmdb.")
-
-def asset(request, asset_id):
-    return HttpResponse("This is asset. asset_id: %s" % asset_id)
+def asset_add(request):
+    if request.method == "POST":
+        form = HostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
+    else: # GET方法
+        form = HostForm()
+    return render(request, "add.html", {"form": form})
