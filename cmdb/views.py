@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from django.shortcuts import render, HttpResponse, redirect
+=======
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
+>>>>>>> feature/delete
 from .models import Host
 from .forms import HostForm
 # Create your views here.
@@ -14,4 +18,25 @@ def asset_add(request):
             return redirect("/")
     else: # GET方法
         form = HostForm()
+<<<<<<< HEAD
     return render(request, "add.html", {"form": form})
+=======
+    return render(request, "add.html", {"form": form})
+
+def asset_edit(request, pk: int):
+    host = get_object_or_404(Host, pk=pk)
+    if request.method == "POST":
+        form = HostForm(request.POST, instance=host)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
+    else:
+        form = HostForm(instance=host)
+    return render(request, "edit.html", {"form": form, "host": host})
+
+def asset_delete(request, pk):
+    from django.shortcuts import get_object_or_404, redirect
+    host = get_object_or_404(Host, pk=pk)
+    host.delete()
+    return redirect('index')
+>>>>>>> feature/delete

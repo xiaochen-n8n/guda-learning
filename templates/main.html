@@ -37,6 +37,10 @@
               <th>内存</th>
               <th>CPU</th>
               <th>描述</th>
+<<<<<<< HEAD
+=======
+              <th>操作</th>
+>>>>>>> feature/delete
             </tr>
             {% for host in host_list %}
             <tr>
@@ -46,6 +50,13 @@
               <td>{{ host.mem }}</td>
               <td>{{ host.cpu }}</td>
               <td>{{ host.desc }}</td>
+<<<<<<< HEAD
+=======
+              <td>
+                <a href="{% url 'asset_edit' host.id %}" class="btn btn-primary btn-xs">编辑</a>
+                <a href="{% url 'asset_delete' host.id %}" class="btn btn-danger btn-xs" onclick="return confirm('确定要删除该主机吗？');">删除</a>
+              </td>
+>>>>>>> feature/delete
             </tr>
             {% endfor %}
           </table>
