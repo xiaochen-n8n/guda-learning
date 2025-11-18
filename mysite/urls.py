@@ -5,9 +5,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name='index'),
     path("add/", views.asset_add, name="asset_add"),
-<<<<<<< HEAD
-=======
     path("edit/<int:pk>/", views.asset_edit, name="asset_edit"),
     path("delete/<int:pk>/", views.asset_delete, name="asset_delete"),
->>>>>>> feature/delete
 ]

@@ -16,7 +16,6 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">主机列表</h3>
-
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Collapse">
@@ -37,10 +36,7 @@
               <th>内存</th>
               <th>CPU</th>
               <th>描述</th>
-<<<<<<< HEAD
-=======
               <th>操作</th>
->>>>>>> feature/delete
             </tr>
             {% for host in host_list %}
             <tr>
@@ -50,13 +46,10 @@
               <td>{{ host.mem }}</td>
               <td>{{ host.cpu }}</td>
               <td>{{ host.desc }}</td>
-<<<<<<< HEAD
-=======
               <td>
                 <a href="{% url 'asset_edit' host.id %}" class="btn btn-primary btn-xs">编辑</a>
                 <a href="{% url 'asset_delete' host.id %}" class="btn btn-danger btn-xs" onclick="return confirm('确定要删除该主机吗？');">删除</a>
               </td>
->>>>>>> feature/delete
             </tr>
             {% endfor %}
           </table>
