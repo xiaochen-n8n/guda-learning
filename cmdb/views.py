@@ -30,13 +30,13 @@ def asset_edit(request, pk: int):
         form = HostForm(instance=host)
     return render(request, "edit.html", {"form": form, "host": host})
 
-def asset_delete(request, pk):
-    from django.shortcuts import get_object_or_404, redirect
-    host = get_object_or_404(Host, pk=pk)
-    host.delete()
-    return redirect('index')
+# @require_POST
+# def asset_delete(request, pk):
+#     host = get_object_or_404(Host, pk=pk)
+#     host.delete()
+#     return redirect('index')
 
-@require_POST
+# @require_POST
 def asset_delete(request, pk):
     from django.shortcuts import get_object_or_404, redirect
     host = get_object_or_404(Host, pk=pk)
