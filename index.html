@@ -3,6 +3,7 @@
 {% block content %}
   {% if request.user.is_authenticated %}
   <h2>实时聊天室（{{ nickname }}）</h2>
+  <div id="online">在线人数：0</div>
   <ul id="chat"></ul>
   <input id="msg" placeholder="输入消息..." autofocus>
   <button onclick="sendMsg()">发送</button>
@@ -12,8 +13,12 @@
 
   ws.onmessage = (e) => {
     const data = JSON.parse(e.data);
+    if (data.kind === 'count') {
+      document.getElementById('online').textContent = '在线人数：' + data.count;
+      return;
+    }
     const li = document.createElement("li");
-    li.textContent = data.message;
+    li.textContent = data.message || '';
     document.getElementById("chat").appendChild(li);
   };
 
