@@ -4,11 +4,16 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import Host
 from .forms import HostForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+@login_required
 def index(request):
     host_list = Host.objects.all()
     return render(request, "main.html", {"host_list": host_list})
 
+@login_required
 def asset_add(request):
     if request.method == "POST":
         form = HostForm(request.POST)
@@ -19,6 +24,7 @@ def asset_add(request):
         form = HostForm()
     return render(request, "add.html", {"form": form})
 
+@login_required
 def asset_edit(request, pk: int):
     host = get_object_or_404(Host, pk=pk)
     if request.method == "POST":
@@ -30,13 +36,7 @@ def asset_edit(request, pk: int):
         form = HostForm(instance=host)
     return render(request, "edit.html", {"form": form, "host": host})
 
-# @require_POST
-# def asset_delete(request, pk):
-#     host = get_object_or_404(Host, pk=pk)
-#     host.delete()
-#     return redirect('index')
-
-# @require_POST
+@login_required
 def asset_delete(request, pk):
     from django.shortcuts import get_object_or_404, redirect
     host = get_object_or_404(Host, pk=pk)
@@ -79,3 +79,33 @@ def collect(request):
         host.desc = desc
         host.save()
     return HttpResponse("success")
+
+
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("index")
+        else:
+            return render(request, "login.html", {"error": "用户名或密码错误"})
+    return render(request, "login.html")
+
+
+def user_register(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        if User.objects.filter(username=username).exists():
+            return render(request, "register.html", {"error": "用户名已存在"})
+        user = User.objects.create_user(username=username, password=password)
+        login(request, user)
+        return redirect("index")
+    return render(request, "register.html")
+
+
+def user_logout(request):
+    logout(request)
+    return redirect("login")
