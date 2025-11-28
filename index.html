@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>WebSocket 聊天室</title>
-</head>
-<body>
-  <h2>实时聊天室</h2>
+{% extends 'base.html' %}
+{% block title %}WebSocket 聊天室{% endblock %}
+{% block content %}
+  {% if request.user.is_authenticated %}
+  <h2>实时聊天室（{{ nickname }}）</h2>
+  <div id="online">在线人数：0</div>
   <ul id="chat"></ul>
   <input id="msg" placeholder="输入消息..." autofocus>
   <button onclick="sendMsg()">发送</button>
@@ -30,5 +28,25 @@
     input.value = "";
   }
   </script>
-</body>
-</html>
+  {% else %}
+  <h2>注册或登录后进入聊天室</h2>
+  {% if error %}<p>{{ error }}</p>{% endif %}
+  <form id="authForm" method="post">
+    {% csrf_token %}
+    <input name="username" placeholder="用户名" required>
+    <input type="password" name="password" placeholder="密码" required>
+    <input id="nickname" name="nickname" placeholder="昵称">
+    <button id="btnSignup" type="submit" formaction="{% url 'signup' %}" formmethod="post">注册</button>
+    <button id="btnLogin" type="submit" formaction="{% url 'login' %}" formmethod="post">登录</button>
+  </form>
+  <script>
+  (function(){
+    var nick = document.getElementById('nickname');
+    var btnSignup = document.getElementById('btnSignup');
+    var btnLogin = document.getElementById('btnLogin');
+    if(btnSignup){ btnSignup.addEventListener('click', function(){ if(nick){ nick.required = true; } }); }
+    if(btnLogin){ btnLogin.addEventListener('click', function(){ if(nick){ nick.required = false; } }); }
+  })();
+  </script>
+  {% endif %}
+{% endblock %}

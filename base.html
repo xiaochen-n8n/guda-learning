@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}WebSocket 聊天室{% endblock %}</title>
+  <style>
+    nav { padding: 10px; background: #f3f3f3; display: flex; gap: 12px; align-items: center; position: relative; }
+    .dropdown { position: relative; }
+    .dropdown-menu { position: absolute; top: 100%; right: 0; background: #fff; border: 1px solid #ccc; box-shadow: 0 2px 8px rgba(0,0,0,0.15); padding: 12px; min-width: 220px; display: none; z-index: 100; }
+    .dropdown-menu p { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="{% url 'index' %}">首页</a>
+    {% if request.user.is_authenticated %}
+      <div class="dropdown">
+        <button id="accountBtn">账户</button>
+        <div id="accountDropdown" class="dropdown-menu">
+          <p>用户名：{{ request.user.username }}</p>
+          <p>昵称：{{ nickname|default:request.user.username }}</p>
+        </div>
+      </div>
+      <a href="{% url 'logout' %}">退出</a>
+    {% else %}
+      <span>未登录</span>
+    {% endif %}
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <script>
+  (function(){
+    var btn = document.getElementById('accountBtn');
+    var menu = document.getElementById('accountDropdown');
+    if(btn && menu){
+      btn.addEventListener('click', function(){
+        var visible = menu.style.display === 'block';
+        menu.style.display = visible ? 'none' : 'block';
+      });
+      document.addEventListener('click', function(e){
+        if(!menu.contains(e.target) && e.target !== btn){
+          menu.style.display = 'none';
+        }
+      });
+    }
+  })();
+  </script>
+</body>
+</html>
